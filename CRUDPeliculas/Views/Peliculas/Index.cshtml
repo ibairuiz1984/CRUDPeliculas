@@ -41,58 +41,55 @@
                     </select>
                     <button type="submit" class="btn btn-primary">Filtrar</button>
                 </div>
-                <div class="mb-3">
-                    <div class="form-check">
-                        <!-- Agrega un valor 'true' al checkbox -->
-                        <input class="form-check-input" type="checkbox" id="conComentarios" name="conComentarios" value="true">
-                        <!-- Agrega un campo oculto con el valor 'false' -->
-                        <input type="hidden" name="conComentarios" value="false">
-                        <label class="form-check-label" for="conComentarios">
-                            Comentadas
-                        </label>
-                    </div>
-                </div>
             </form>
         </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <a asp-action="Create" class="btn btn-primary">Crear Nueva</a>
-        </div>
     </div>
-    <
+    <div class="col-md-6">
+        <form method="get" asp-action="Index">
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="conComentarios" name="conComentarios" value="true">
+                    <input type="hidden" name="conComentarios" value="false">
+                    <label class="form-check-label" for="conComentarios">Comentadas</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col">
-                <div class="card h-100">
-                    <img src="@item.ImagenUrl" alt="@item.Titulo" class="card-img-top" style="height: 300px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Titulo</h5>
-                        <p class="card-text"><strong>Director:</strong> @item.Director</p>
-                        <p class="card-text"><strong>Año:</strong> @(item.Anio)</p>
-                        <p class="card-text"><strong>Género:</strong> @(item.Genero)</p>
-                        <p class="card-text short-sinopsis">
-                            @if (!string.IsNullOrEmpty(item.Sinopsis) && item.Sinopsis.Length > 100)
-                            {
-                                @item.Sinopsis.Substring(0, 100)
-                            }
-                            else
-                            {
-                                @item.Sinopsis
-                            }
-                        </p>
-                        <p class="card-text full-sinopsis" style="display: none;">@item.Sinopsis</p>
-                        <button class="btn btn-link read-more">Ver más</button>
-                        <div class="btn-group" role="group">
-                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Editar</a>
-                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary">Detalles</a>
-                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger">Eliminar</a>
-                        </div>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <img src="@item.ImagenUrl" alt="@item.Titulo" class="card-img-top" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Titulo</h5>
+                    <p class="card-text"><strong>Director:</strong> @item.Director</p>
+                    <p class="card-text"><strong>Año:</strong> @(item.Anio)</p>
+                    <p class="card-text"><strong>Género:</strong> @(item.Genero)</p>
+                    <p class="card-text short-sinopsis">
+                        @if (!string.IsNullOrEmpty(item.Sinopsis) && item.Sinopsis.Length > 100)
+                        {
+                            @item.Sinopsis.Substring(0, 100)
+                        }
+                        else
+                        {
+                            @item.Sinopsis
+                        }
+                    </p>
+                    <p class="card-text full-sinopsis" style="display: none;">@item.Sinopsis</p>
+                    <button class="btn btn-link read-more">Ver más</button>
+                    <div class="btn-group" role="group">
+                        <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger">Eliminar</a>
                     </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
 </div>
 
 <!-- Modal -->
