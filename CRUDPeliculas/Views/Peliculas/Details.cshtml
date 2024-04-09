@@ -1,0 +1,74 @@
+﻿@model CRUDPeliculas.Entidades.Pelicula
+
+@{
+    ViewData["Title"] = "Detalles de la Película";
+}
+
+<h1>@Model.Titulo</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="@Model.ImagenUrl" alt="@Model.Titulo" class="img-fluid" style="max-height: 400px;">
+    </div>
+    <div class="col-md-8">
+        <h4>Detalles</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Título:</dt>
+            <dd class="col-sm-9">@Model.Titulo</dd>
+            <dt class="col-sm-3">Director:</dt>
+            <dd class="col-sm-9">@Model.Director</dd>
+            <dt class="col-sm-3">Año:</dt>
+            <dd class="col-sm-9">@Model.Anio</dd>
+            <dt class="col-sm-3">Género:</dt>
+            <dd class="col-sm-9">@Model.Genero</dd>
+            <dt class="col-sm-3">Sinopsis:</dt>
+            <dd class="col-sm-9">@Model.Sinopsis</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>Dejar un comentario</h3>
+    <form asp-action="AgregarComentario" method="post">
+        <input type="hidden" name="peliculaId" value="@Model.Id" />
+        <div class="form-group">
+            <label for="contenido">Contenido:</label>
+            <textarea class="form-control" name="contenido" id="contenido"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar comentario</button>
+    </form>
+}
+
+<h3>Comentarios</h3>
+@if (Model.Comentarios.Any())
+{
+    <div class="list-group">
+        @foreach (var comentario in Model.Comentarios)
+        {
+            <div class="list-group-item">
+                @if (comentario.UsuarioNombre != null)
+                {
+                    <h5 class="mb-1">@comentario.UsuarioNombre</h5>
+                }
+                else
+                {
+                    <h5 class="mb-1">Usuario eliminado</h5>
+                }
+                <p>@comentario.Contenido</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No hay comentarios para esta película.</p>
+}
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+</div>

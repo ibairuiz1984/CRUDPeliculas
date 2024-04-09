@@ -1,0 +1,148 @@
+﻿@model IEnumerable<CRUDPeliculas.Entidades.Pelicula>
+
+@{
+    ViewData["Title"] = "Películas";
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+
+<h1 class="mb-4">Películas</h1>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" asp-action="Index" class="d-flex flex-column flex-md-row">
+                <div class="input-group mb-3">
+                    <input type="text" name="nombre" placeholder="Título" class="form-control">
+                    <input type="text" name="director" placeholder="Director/a" class="form-control">
+                    <select name="genero" id="genero" class="form-select">
+                        <option value="">Géneros</option>
+                        <option value="Acción">Acción</option>
+                        <option value="Animación">Animación</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Ciencia Ficción">Ciencia Ficción</option>
+                        <option value="Comedia">Comedia</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Fantasía">Fantasía</option>
+                        <option value="Musical">Musical</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Thriller">Thriller</option>
+                    </select>
+                    <select name="ordenarPor" id="ordenarPor" class="form-select">
+                        <option value="">Ordenar...</option>
+                        <option value="Titulo">Título</option>
+                        <option value="Anio">Año</option>
+                        <option value="Genero">Género</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <!-- Agrega un valor 'true' al checkbox -->
+                        <input class="form-check-input" type="checkbox" id="conComentarios" name="conComentarios" value="true">
+                        <!-- Agrega un campo oculto con el valor 'false' -->
+                        <input type="hidden" name="conComentarios" value="false">
+                        <label class="form-check-label" for="conComentarios">
+                            Comentadas
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <a asp-action="Create" class="btn btn-primary">Crear Nueva</a>
+        </div>
+    </div>
+    <
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <img src="@item.ImagenUrl" alt="@item.Titulo" class="card-img-top" style="height: 300px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Titulo</h5>
+                        <p class="card-text"><strong>Director:</strong> @item.Director</p>
+                        <p class="card-text"><strong>Año:</strong> @(item.Anio)</p>
+                        <p class="card-text"><strong>Género:</strong> @(item.Genero)</p>
+                        <p class="card-text short-sinopsis">
+                            @if (!string.IsNullOrEmpty(item.Sinopsis) && item.Sinopsis.Length > 100)
+                            {
+                                @item.Sinopsis.Substring(0, 100)
+                            }
+                            else
+                            {
+                                @item.Sinopsis
+                            }
+                        </p>
+                        <p class="card-text full-sinopsis" style="display: none;">@item.Sinopsis</p>
+                        <button class="btn btn-link read-more">Ver más</button>
+                        <div class="btn-group" role="group">
+                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Editar</a>
+                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary">Detalles</a>
+                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img id="modalImage" src="#" alt="Película" style="max-width: 100%; max-height: 90vh;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        //Estructura segura con DOMContentLoaded
+        document.addEventListener("DOMContentLoaded", function () {
+            $('.read-more').click(function () {
+                var card = $(this).closest('.card');
+                var fullSinopsis = card.find('.full-sinopsis');
+                var shortSinopsis = card.find('.short-sinopsis');
+                var buttonText = card.find('.read-more');
+
+                fullSinopsis.toggle();
+                shortSinopsis.toggle();
+
+                if (fullSinopsis.is(':visible')) {
+                    buttonText.text('Ver menos');
+                } else {
+                    buttonText.text('Ver más');
+                }
+            });
+
+            $('.card-img-top').click(function () {
+                var imgUrl = $(this).attr('src');
+                $('#modalImage').attr('src', imgUrl);
+                $('#imageModal').modal('show');
+            });
+
+            // Agregar lógica para ordenar películas
+            $('#ordenarPor').change(function () {
+                $('form').submit(); // Enviar el formulario cuando cambie la opción de ordenar
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Evento que se activa cuando cambia el estado del checkbox
+            $('#conComentarios').change(function () {
+                $('form').submit(); // Enviar el formulario cuando cambie el estado del checkbox
+            });
+        });
+    </script>
+}

@@ -1,0 +1,5 @@
+﻿@{
+    Layout = "_Layout";
+    var nombreUsuario = Context.User.Identity.IsAuthenticated ? Context.User.Identity.Name : null;
+    ViewData["NombreUsuario"] = nombreUsuario;
+}

@@ -1,0 +1,72 @@
+﻿@model CRUDPeliculas.Entidades.Pelicula
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Pelicula</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Director" class="control-label"></label>
+                <input asp-for="Director" class="form-control" />
+                <span asp-validation-for="Director" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Anio" class="control-label">Año</label>
+                <input asp-for="Anio" class="form-control" />
+                <span asp-validation-for="Anio" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Genero" class="control-label">Género</label>
+                    <select asp-for="Genero" class="form-control">
+                        <option value="Acción">Acción</option>
+                        <option value="Animación">Animación</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Ciencia Ficción">Ciencia Ficción</option>
+                        <option value="Comedia">Comedia</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Fantasía">Fantasía</option>
+                        <option value="Musical">Musical</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Thriller">Thriller</option>
+                        <!-- Agrega más opciones según sea necesario -->
+                    </select>
+                    <span asp-validation-for="Genero" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Sinopsis" class="control-label"></label>
+                    <textarea asp-for="Sinopsis" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Sinopsis" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImagenUrl" class="control-label"></label>
+                    <input asp-for="ImagenUrl" class="form-control" />
+                    <span asp-validation-for="ImagenUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

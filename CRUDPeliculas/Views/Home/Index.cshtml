@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CRUDPeliculas.Entidades.Pelicula>
+
+@{
+    ViewData["Title"] = "Películas recomendadas para hoy";
+}
+
+<div class="row">
+    <div class="col">
+        <h1 class="text-center">Peliculas recomendadas para hoy</h1>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card">
+                <img src="@item.ImagenUrl" alt="@item.Titulo" class="card-img-top mx-auto d-block mt-3" style="max-width: 150px; height: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Titulo</h5>
+                    <p class="card-text"><strong>Director:</strong> @item.Director</p>
+                    <p class="card-text"><strong>Año:</strong> @(item.Anio)</p>
+                    <p class="card-text"><strong>Género:</strong> @(item.Genero)</p>
+                    <p class="card-text">@item.Sinopsis</p>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
